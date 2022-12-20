@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Memo;
 use App\Models\Tag;
+use Validator;
 
 
 class HomeController extends Controller
@@ -37,6 +38,24 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        
+        $rulus = [
+            'content' => 'required',
+            'tag' => 'required',
+          ];
+        
+        $message = [
+            'content.required' => 'メモを入力してください',
+            'tag.required' => 'タグを入力してください',
+          ];
+        
+        $validator = Validator::make($request->all(), $rulus, $message);
+        
+        if ($validator->fails()) {
+            return redirect('/create')
+            ->withErrors($validator)
+            ->withInput();
+          }
         // dd($data);
         // POSTされたデータをDB（memosテーブル）に挿入
         // MEMOモデルにDBへ保存する命令を出す

@@ -5,6 +5,9 @@
     <div class="card w-100">
         <div class="card-header">新規メモ作成</div>
         <div class="card-body">
+        @foreach ($errors->all() as $error)
+            <p class="text-danger">{{$error}}</p>
+        @endforeach
             <form method='POST' action="/store">
                 @csrf
                 <input type='hidden' name='user_id' value="{{ $user['id'] }}">
